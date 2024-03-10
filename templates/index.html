@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Conveyor belt defect detection</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .container {
+      background-color: #444;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .jumbotron {
+      background-color: #222;
+      color: #fff;
+    }
+
+    .jumbotron button {
+      margin-top: 10px;
+    }
+
+    form {
+      color: #fff;
+    }
+
+    input,
+    button.btn-success {
+      background-color: #007BFF;
+      color: #fff;
+      border: 1px solid #007BFF;
+    }
+
+    button.btn-success:hover {
+      background-color: #007BFF;
+      border: 1px solid #007BFF;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="jumbotron bg-primary">Conveyor belt defect detection</h1>
+  
+  
+
+  <form class="form-horizontal" action="/submit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Upload Your Image :</label>
+      <div class="col-sm-10">
+        <input type="file" class="form-control" placeholder="File"  name="my_image" id="pwd">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Display error message if any -->
+  {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  {% if prediction %}
+    <img src="{{img_path}}" height="400px" width="400px">
+    <h2>Model Prediction: <i>{{prediction}}</i></h2>
+    {% if flag_variable %}
+      <h2>Defect Status: {{flag_variable}}</h2>
+    {% endif %}
+  {% endif %}
+</div>
+
+<script>
+  $(document).ready(function () {
+    const serverUrl = window.location.origin;
+
+    $("#liveCamBtn").click(function () {
+      const webcamIP = $("#webcamIP").val();
+
+      $.ajax({
+        type: "POST",
+        url: serverUrl + "/set_webcam_ip",
+        data: { webcam_ip: webcamIP },
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (error) {
+          console.error("Error sending Webcam IP: ", error);
+        },
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Conveyor belt defect detection</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .container {
+      background-color: #444;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .jumbotron {
+      background-color: #222;
+      color: #fff;
+    }
+
+    .jumbotron button {
+      margin-top: 10px;
+    }
+
+    form {
+      color: #fff;
+    }
+
+    input,
+    button.btn-success {
+      background-color: #007BFF;
+      color: #fff;
+      border: 1px solid #007BFF;
+    }
+
+    button.btn-success:hover {
+      background-color: #007BFF;
+      border: 1px solid #007BFF;
+    }
+
+    /* Add styles for webcam window */
+    #webcam-container {
+      border: 2px solid #007BFF; /* Border color */
+      padding: 10px; /* Padding around the webcam window */
+      margin-bottom: 20px; /* Margin between webcam window and other elements */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="jumbotron bg-primary">Conveyor belt defect detection</h1>
+  
+  <h1>Live Webcam</h1>
+  <div id="webcam-container">
+    <img id="webcam-image" src="{{ url_for('video') }}" width="40%" />
+    <div id="prediction-container">
+      <p id="prediction-text">Defect Status: <span id="prediction-value"></span></p>
+    </div>
+  </div>
+  
+  <script>
+    // Update defect status in real-time
+    function updatePrediction(prediction) {
+      var predictionContainer = document.getElementById("prediction-value");
+
+      if (prediction > 0.5) {
+        predictionContainer.innerText = "Defect is detected";
+        predictionContainer.style.color = "red";  // You can customize the color
+      } else {
+        predictionContainer.innerText = "Defect is not detected";
+        predictionContainer.style.color = "green";  // You can customize the color
+      }
+    }
+  </script>
+  
+</div>
+
+</body>
+</html>
